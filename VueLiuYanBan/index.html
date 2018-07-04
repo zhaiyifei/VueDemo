@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>留言板</title>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+	</head>
+	<!--<div id="app" v-cloak style="width: 500px; margin:0 auto;">-->
+	<body>
+		<div id="app" style="width: 500px; margin:0 auto;">
+			<div class="message">
+				<!--<v-input v-model="username"></v-input>-->
+				<v-input v-model="username" ref="input-com"></v-input>
+				<v-textarea v-model="message"></v-textarea>
+				<button @click="handleSend">发布</button>
+			</div>
+			<div class="list">		<!--留言板-->
+				<v-list :list="list" @reply="handleReply" @delete="handleDelete"></v-list>
+			</div>
+		</div>
+		<script src="js/vue.js"></script>
+			
+		<script type="text/template" id="v-input">
+			<div>
+				<span>昵称：</span>
+				<input type="text" :value="value" @input="$emit('input', $event.target.value)" 
+					ref="input-ref" placeholder="请输入留言内容">
+			</div>
+		</script>
+		<script type="text/template" id="v-textarea">
+			<div>
+				<span>留言板内容：</span>
+				<textarea :value="value" @input="$emit('input', $event.target.value)"></textarea>
+			</div>
+		</script>
+		
+		<script type="text/template" id="v-list">
+			<div>
+				<div class="list-item" v-for="(item, index) in itemlist">
+					<span>{{ item.name }}</span>
+					<div class="list-msg">
+						<p>{{ item.message }}</p>
+						<a class="list-reply" @click="handleDelete(index)">&nbsp;&nbsp;&nbsp;&nbsp;删除</a>
+						<a class="list-reply" @click="handleReply(index)">回复</a>
+					</div>
+				</div>
+			</div>
+		</script>
+		
+		<script>
+			Vue.component('v-input', {
+				template : "#v-input",
+				props : {
+					value : {
+						type : String,
+						default : ''
+					}
+				},
+				methods : {
+					fouceEvent : function(){
+						this.$refs['input-ref'].focus();
+					}
+				}
+			});
+			
+			Vue.component('v-textarea', {
+				template : '#v-textarea',
+				props : {
+					value : {
+						type : String,
+						default : ''
+					}
+				}
+			});
+			
+			Vue.component("v-list", {
+				template : '#v-list',
+				props : {
+					list : {
+						type : Array,
+						default : []
+					}
+				},
+				data : function(){
+					return {
+						itemlist : this.list
+					}
+				},
+				methods : {
+					handleReply : function(index){
+						this.$emit("reply", index);
+					},
+					handleDelete : function(index){
+						this.$emit("delete", index);
+					}
+				}
+			});
+			
+			var app = new Vue({
+				el : "#app",
+				data : function(){
+					return {
+						username : '',
+						message : '',
+						list : []
+					}
+				},
+				methods : {
+					handleSend : function(){
+						if (this.username === ''){
+							alert("请输入昵称");
+							return;
+						}
+						if(this.message === ''){
+							alert("请输入留言内容");
+							return;
+						}
+						this.list.push({
+							name : this.username,
+							message : this.message
+						});
+						this.message = '';
+						this.username = '';
+					},
+					handleReply : function(index){
+						var name = this.list[index].name;
+						this.message = "回复@" + name + ": ";
+						this.$refs['input-com'].fouceEvent();
+					},
+					handleDelete : function(index){
+						this.list.splice(index, 1);
+					}
+				}
+			});
+			
+		</script>
+			
+	</body>
+</html>
