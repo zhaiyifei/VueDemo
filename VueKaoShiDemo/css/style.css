@@ -1,0 +1,78 @@
+[v-cloak]{
+	display: none;
+}
+.main {
+	width: 50%;
+	height: 600px;
+}
+
+.panel{
+	display: block;
+	position: fixed;
+	left: 38%;
+	width: 25%;
+	height: 75%;
+	margin: 5px 0;
+	background-color: #FFF;
+	font-size: 12px;
+	border-radius: 4px;
+	box-shadow: 0 1px 6px rgba(0,0,0, .2);
+}
+
+.buttion-panel{
+	display: block;
+	position: sticky;
+	padding-left: 7%;
+    padding-bottom: 5%;
+    padding-top: 5%;
+	top: 75%;
+	border-radius: 5px;
+	box-shadow: -1px 0px 18px #333333;
+}
+
+button {
+	width: 22%;
+	margin: 0px 4%;
+	color: #fff;
+	background-color: #39f;
+	border: 0;
+	padding: 6px;
+	text-align: center;
+	font-size: 12px;
+	border-radius: 5px;
+	box-shadow: 1px -1px 10px #333333;
+	cursor: pointer;
+	outline: none;
+}
+.two-buttion{
+	margin: 0px 14%;
+}
+.btn-disabled{
+	background-color: darkgray;
+}
+li {
+/*	margin: 10px 0px;*/
+    padding: 10px;
+}
+input[type=radio]{
+	cursor: pointer;
+}
+input[type=checkbox]{
+	cursor: pointer;
+}
+.subjects-panel{
+	margin: 5px;
+	height: 85%;
+	border: 0;
+	border-radius: 5px;
+	background-color: rgba(0, 0, 0, 0.01);
+}
+
+.subject-div{
+	display: flex;
+	margin-top: 5px;
+}
+
+.subject{
+	margin-right: 20px;
+}

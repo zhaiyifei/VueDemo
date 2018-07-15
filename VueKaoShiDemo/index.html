@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>问卷调查</title>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+	</head>
+	<body>
+		<div class="main" id="app">  	<!--根区域-->
+			<panel-component></panel-component>
+		</div>
+		
+		<script src="js/vue.js"></script>
+		<script src="js/panel.js"></script>
+		<script type="text/template" id="button-component">
+			<div>		<!--按钮区域-->
+				<button v-if="current_page > 1" 
+					@click="perviousPage" 
+					:class="btnClass">上一页</button>
+				<button v-if="current_page < 3" 
+					@click="nextPage" 
+					:class="[btnClass, disabledClass]"
+					:disabled="is_disabled">下一页</button>
+				<button v-if="current_page === 3" 
+					@click="submitFrom" 
+					:class="[btnClass, disabledClass]"
+					:disabled="is_disabled">提交</button>
+				<button @click="resetPage">重置</button>
+			</div>
+		</script>
+		<!--单选按钮组件-->
+		<script type="text/template" id="radio-component">
+			<div>					
+				<label>{{title}}</label>
+				<div class="subject-div">
+					<div class="subject" v-for="item in items">
+						<input type="radio" v-model="results" :value="item.msg" />
+						<label>{{item.msg}}</label>
+					</div>
+				</div>
+			</div>
+		</script>
+<!--		多选组件-->
+		<script type="text/template" id="checkbox-component">
+			<div>
+				<label>{{title}}</label>
+				<div class="subject-div">
+					<div class="subject" v-for="item in items">
+						<input type="checkbox" v-model="results" :value="item.msg" />
+						<label>{{item.msg}}</label>
+					</div>
+				</div>
+			</div>
+		</script>
+		<!--多行文本输入组件-->
+		<script type="text/template" id="textarea-component">
+			<div>
+				<label>{{title}}</label>
+				<div class="subject-div">
+					<div class="subject">
+						<textarea rows="3" cols="30" v-model="results"></textarea>
+					</div>
+				</div>
+			</div>
+		</script>
+		<!--items组件-->
+		<script type="text/template" id="items-component">
+			<div>
+				<ol v-if="current_page === 1">
+					<li v-for="(item, index) in redioitems" :key="item.id">   <!--单选组件-->
+						<radio-component :value="item" :index="index" @setSelected="setSelected"></radio-component>
+					</li>
+				</ol>
+				<ol v-else-if="current_page === 2">
+					<li v-for="(item, index) in checkitems" :key="item.id">	<!--多选组件-->
+						<checkbox-component :value="item" :index="index" @setSelected="setSelected"></checkbox-component>
+					</li>
+				</ol>
+				<ol v-else-if="current_page === 3">
+					<li v-for="(item, index) in textareaitems" :key="item.id">	<!--多行文本组件-->
+						<textarea-component :value="item" :index="index" @setSelected="setSelected"></textarea-component>
+					</li>
+				</ol>
+			</div>
+		</script>
+		<!--面板组件-->
+		<script type="text/template" id="panel-component">
+			<div class="panel">		<!--面板区域-->
+				<div class="subjects-panel">	<!--内容/题目区域-->
+					<items-component v-model="current_page" 
+						@setBtnDisabled="setBtnDisabled"></items-component>
+				</div>
+				<div class="buttion-panel">		<!--按钮区域-->
+					<button-component v-model="current_page" 
+						@setCurrentPage= "setCurrentPage" 
+						:is_disabled="is_disabled"
+						:disabledClass="disabledClass"></button-component>
+				</div>
+			</div>
+		</script>
+			
+		<script>
+//			中央事件总线/管理器
+			var bus = new Vue();
+			
+			var app = new Vue({
+				el: "#app",
+			});
+		</script>
+	</body>
+</html>
